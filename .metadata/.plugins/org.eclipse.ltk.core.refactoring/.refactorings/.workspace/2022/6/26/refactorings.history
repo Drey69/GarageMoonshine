@@ -1,0 +1,3 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">&#x0A;<refactoring comment="Delete resource &apos;SamGarage/Core/Src/classThermistor.cpp&apos;" deleteContents="false" description="Delete resource &apos;SamGarage/Core/Src/classThermistor.cpp&apos;" element1="/SamGarage/Core/Src/classThermistor.cpp" flags="7" id="org.eclipse.ltk.core.refactoring.delete.resources" resources="1" stamp="1656171893049"/>&#x0A;<refactoring comment="Delete resource &apos;SamGarage/Core/Inc/classThermistor.h&apos;" deleteContents="false" description="Delete resource &apos;SamGarage/Core/Inc/classThermistor.h&apos;" element1="/SamGarage/Core/Inc/classThermistor.h" flags="7" id="org.eclipse.ltk.core.refactoring.delete.resources" resources="1" stamp="1656171900792"/>
+</session>

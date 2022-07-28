@@ -1,0 +1,26 @@
+buildConsoleInfoStreamColor=0,128,192
+c_braces=0,128,64
+c_braces_bold=true
+content_assist_proposals_background=128,255,255
+content_assist_proposals_timeout=5000
+eclipse.preferences.version=1
+editor_folding_default_comments=true
+editor_folding_default_functions=true
+editor_folding_default_methods=true
+editor_folding_default_structures=true
+editor_folding_preprocessor_enabled=true
+editor_folding_statements=true
+hoverModifierMasks=org.eclipse.cdt.ui.BestMatchHover;0;org.eclipse.cdt.debug.internal.ui.editors.DebugTextHover;0;org.eclipse.cdt.ui.ProblemHover;0;org.eclipse.cdt.ui.CDocHover;0;org.eclipse.cdt.ui.CMacroExpansionHover;0;org.eclipse.cdt.ui.CSourceHover;131072;org.eclipse.cdt.ui.AnnotationHover;0;
+hoverModifiers=org.eclipse.cdt.ui.BestMatchHover;0;org.eclipse.cdt.debug.internal.ui.editors.DebugTextHover;\!0;org.eclipse.cdt.ui.ProblemHover;\!0;org.eclipse.cdt.ui.CDocHover;\!0;org.eclipse.cdt.ui.CMacroExpansionHover;\!0;org.eclipse.cdt.ui.CSourceHover;Shift;org.eclipse.cdt.ui.AnnotationHover;\!0;
+inactiveCodeColor=0,255,0
+inactiveCodeEnable=false
+matchingBrackets=false
+matchingBracketsColor=0,128,0
+org.eclipse.cdt.internal.ui.text.doctools.doxygen.multi_bold=true
+org.eclipse.cdt.ui.text.templates.custom=<?xml version\="1.0" encoding\="UTF-8" standalone\="no"?><templates/>
+scalability.detect=false
+sourceHoverBackgroundColor=47,47,47
+spelling_locale_initialized=true
+spelling_user_dictionary_encoding=Cp1251
+useAnnotationsPrefPage=true
+useQuickDiffPrefPage=true

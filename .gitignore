@@ -1,0 +1,9 @@
+*.s
+*.a
+*.o
+*.ld
+*.launch
+SamGarage/Debug
+SamGarage/Release
+SamGarage/Middlewares
+

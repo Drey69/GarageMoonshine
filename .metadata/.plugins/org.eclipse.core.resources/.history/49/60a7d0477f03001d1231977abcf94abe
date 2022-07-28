@@ -1,0 +1,89 @@
+/*
+ * SenderUart.cpp
+ *
+ *  Created on: Jul 14, 2022
+ *      Author: AnderyP
+ */
+
+#include "SenderUart.h"
+
+
+SenderUart::SenderUart() {
+	// TODO Auto-generated constructor stub
+
+}
+
+SenderUart::~SenderUart() {
+	// TODO Auto-generated destructor stub
+}
+
+void SenderUart::sendStatus(State &st) {
+}
+
+void SenderUart::floatToStr(char *str, const float t)
+{
+	int tempT = t * 100;
+	str[0] = '0';
+	if (t < 100) str++;
+	itoa ( tempT/100, str, 10);
+	if (t >= 100) str += 3;
+	else str += 2;
+	*str = '.';
+	str++;
+	tempT = tempT % 100;
+	if (tempT < 10)
+	{
+		str[0] = '0';
+		str++;
+	}
+	itoa ( tempT, str, 10);
+}
+
+void SenderUart::clearStr(void)
+{
+	for ( int i = 0; i < MessageLength; i++)
+	{
+		messageStr[i] = '0';
+	}
+}
+
+void SenderUart::convertStatus(State &st) {
+}
+
+void SenderUart::timeToStr(char *str, RTC_TimeTypeDef & time)
+{
+	char digit[5];
+	itoa(time.Hours, digit, 10);
+	if (time.Hours < 10)
+	{
+		str[0] = '0';
+		str[1] = digit[0];
+	}
+	else {
+		str[0] = digit[0];
+		str[1] = digit[1];
+	}
+	str[2] = ':';
+	itoa(time.Minutes, digit, 10);
+	if (time.Minutes < 10)
+	{
+		str[3] = '0';
+		str[4] = digit[0];
+	}
+	else {
+		str[3] = digit[0];
+		str[4] = digit[1];
+	}
+	str[5] = ':';
+	itoa(time.Seconds, digit, 10);
+		if (time.Seconds < 10)
+		{
+			str[6] = '0';
+			str[7] = digit[0];
+		}
+		else {
+			str[6] = digit[0];
+			str[7] = digit[1];
+		}
+		str[8] = 0;
+}

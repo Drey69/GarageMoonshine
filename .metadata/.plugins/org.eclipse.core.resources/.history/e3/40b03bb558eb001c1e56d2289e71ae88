@@ -1,0 +1,80 @@
+/*
+ * mainCpp.cpp
+ *
+ *  Created on: Jun 7, 2022
+ *      Author: Drey
+ */
+#include "Screen.h"
+#include "mainCpp.h"
+#include "main.h"
+#include "classEncoder.h"
+#include "Ten.h"
+#include "classOnewire.h"
+
+#include "usart_ring.h"
+#include "ssd1306.h"
+#include "string.h"
+#include "stdlib.h"
+#include "stdio.h"
+
+extern TIM_HandleTypeDef htim4;
+extern TIM_HandleTypeDef htim2;
+
+int encCounter;
+Screen screen;
+Encoder encoder;
+Ten ten;
+classOnewire tempCube;
+
+uint8_t romCube[] = {00, 00, 00, 00, 00, 00, 00, 00};
+
+// прерывание по енкодеру
+void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim){
+	if(htim->Instance == TIM4)	{
+		if (__HAL_TIM_IS_TIM_COUNTING_DOWN(&htim4)) encCounter--;
+		else encCounter++;
+	}
+}
+///////////////////////////////////////////////////////////////////////////////////////////
+void init()
+{
+	encCounter = 0;
+	encoder.clearSteps();
+	screen.init();
+	screen.clearScreen();
+	ten.init();
+	tempCube = classOnewire(&htim2, Ds18b20_GPIO_Port, Ds18b20_Pin, romCube);
+
+}
+void delay(int ms){HAL_Delay(ms);}
+//--------------------------------------------------------
+void loop()
+{
+	uint32_t EncoderCounter = 0;
+ 	ten.start(50);
+	while(true)
+	{
+		encoder.tick(&encCounter);
+		if (encoder.available())
+		{
+			if (encoder.isRight() && EncoderCounter < 100)
+				EncoderCounter +=5;
+			if (encoder.isLeft() && EncoderCounter >= 5)
+				EncoderCounter -=5;
+			screen.setPower(EncoderCounter);
+			ten.setPower(EncoderCounter);
+		}
+
+		screen.updateScreen();
+
+		tempCube.readRom();
+		uint8_t * rom = tempCube.getRom();
+
+	}
+}
+//---------------------------------------------------------
+
+uint32_t getEncoderMoves()
+{
+	return __HAL_TIM_GET_COUNTER(&htim4);
+}

@@ -1,0 +1,22 @@
+18:58:36 **** Incremental Build of configuration Debug for project SamGarage ****
+make -j4 all 
+arm-none-eabi-g++ "../Core/Inc/StartMenu.cpp" -mcpu=cortex-m3 -std=gnu++14 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103xB -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -I../USB_DEVICE/App -I../USB_DEVICE/Target -I../Middlewares/ST/STM32_USB_Device_Library/Core/Inc -I../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc -O0 -ffunction-sections -fdata-sections -fno-exceptions -fno-rtti -fno-use-cxa-atexit -Wall -fstack-usage -MMD -MP -MF"Core/Inc/StartMenu.d" -MT"Core/Inc/StartMenu.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Inc/StartMenu.o"
+In file included from ../Core/Inc/StartMenu.cpp:8:
+../Core/Inc/StartMenu.h:14:3: error: expected unqualified-id before 'void'
+   14 |  (void(int index)* )foo;
+      |   ^~~~
+../Core/Inc/StartMenu.h:14:3: error: expected ')' before 'void'
+   14 |  (void(int index)* )foo;
+      |  ~^~~~
+      |   )
+../Core/Inc/StartMenu.h:10:1: error: missing type-name in typedef-declaration
+   10 | typedef struct
+      | ^~~~~~~
+../Core/Inc/StartMenu.h:21:15: error: 'menuItem' has not been declared
+   21 |  void addItem(menuItem m);
+      |               ^~~~~~~~
+make: *** [Core/Inc/subdir.mk:19: Core/Inc/StartMenu.o] Error 1
+"make -j4 all" terminated with exit code 2. Build might be incomplete.
+
+18:58:37 Build Failed. 5 errors, 0 warnings. (took 848ms)
+

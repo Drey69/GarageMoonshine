@@ -1,0 +1,51 @@
+/*
+ * SenderUart.cpp
+ *
+ *  Created on: Jul 14, 2022
+ *      Author: AnderyP
+ */
+
+#include "SenderUart.h"
+
+
+SenderUart::SenderUart() {
+	// TODO Auto-generated constructor stub
+
+}
+
+SenderUart::~SenderUart() {
+	// TODO Auto-generated destructor stub
+}
+
+void SenderUart::sendStatus(State &st) {
+}
+
+void SenderUart::floatToStr(char *str, const float t)
+{
+	int tempT = t * 100;
+	str[0] = '0';
+	if (t < 100) str++;
+	itoa ( tempT/100, str, 10);
+	if (t >= 100) str += 3;
+	else str += 2;
+	*str = '.';
+	str++;
+	tempT = tempT % 100;
+	if (tempT < 10)
+	{
+		str[0] = '0';
+		str++;
+	}
+	itoa ( tempT, str, 10);
+}
+
+void SenderUart::clearStr(void)
+{
+	for ( int i = 0; i < MessageLength; i++)
+	{
+		messageStr[i] = '0';
+	}
+}
+
+void SenderUart::convertStatus(State &st) {
+}

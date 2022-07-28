@@ -1,0 +1,10 @@
+TextOccurrenceHighlighting=false
+TextOccurrenceIndication=true
+TextOccurrenceTextStyle=BOX
+eclipse.preferences.version=1
+org.eclipse.cdt.ui.occurrenceHighlighting=false
+org.eclipse.cdt.ui.occurrenceIndication=true
+org.eclipse.cdt.ui.occurrenceTextStyle=BOX
+org.eclipse.cdt.ui.writeOccurrenceHighlighting=false
+org.eclipse.cdt.ui.writeOccurrenceTextStyle=BOX
+spellingEnabled=false

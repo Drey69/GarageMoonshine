@@ -1,0 +1,17 @@
+/*
+ * StartMenu.h
+ *
+ *  Created on: 18 июн. 2022 г.
+ *      Author: AnderyP
+ */
+
+#ifndef INC_STARTMENU_H_
+#define INC_STARTMENU_H_
+
+class StartMenu {
+public:
+	StartMenu();
+	virtual ~StartMenu();
+};
+
+#endif /* INC_STARTMENU_H_ */
