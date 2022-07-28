@@ -4,7 +4,7 @@
  *  Created on: Apr 6, 2021
  *      Author: 123
  */
-
+// 	победы 72 кв 28
 
 #include "classOnewire.h"
 
@@ -17,6 +17,9 @@ classOnewire::classOnewire(TIM_HandleTypeDef *timer, GPIO_TypeDef *WirePort, uin
 	myTim = *timer;
 	port = WirePort;
 	pin = WirePin;
+	stable = false;
+	lastTemp = 0.0;
+	stableTime = 180000; // 180 sec defoult = 3 min
 	HAL_TIM_Base_Start(&myTim);
 	this->status = wireReady;
 	this->temperature = 0.0;
@@ -154,6 +157,7 @@ void classOnewire::convertALL() {
 float classOnewire::getTemperature() {
 	this->readRam();
 	if (this->status == wireRamCrcOk) this->calculateTemperarute();	//если новое измерение прошло
+	this->checkStability();
 	return this->temperature;										//если новых конверсий не было
 }
 //-----------------------------------------------------------------------
@@ -280,20 +284,38 @@ bool classOnewire::matchRom() {
 	}
 	return true;
 }
+
+bool classOnewire::isStable() { return stable; }
+
+void classOnewire::setStableCheckTimeSec(uint16_t sec) { stableTime = sec * 1000; }
+
+void classOnewire::checkStability()
+{
+	if (temperature > lastTemp) //если температура возросла значит еще не стабильна
+	{
+		lastTimeUpTemp = HAL_GetTick();
+		stable = false;
+		lastTemp = temperature;
+		return;
+	}
+	if (temperature < lastTemp - 3.0) // eсли падает больше чем на три градуса
+	{
+		stable = false;
+		lastTemp = temperature + 1;// +1 защита от предыдущего if ^^
+		return;
+	}
+	//если не возросла то смотрим как долго держится
+	uint32_t now = HAL_GetTick();
+	if (lastTimeUpTemp + stableTime <= now)// темпера стабилизиловалась и не растет
+	{
+		stable = true;
+	}
+}
+
 //-----------------------------------------------------------------------
 uint8_t* classOnewire::getRom()
 {
 	return romData;
 }
-
-
-
-
-
-
-
-
-
-
 
 

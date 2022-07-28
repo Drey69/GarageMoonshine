@@ -48,9 +48,12 @@ enum mainWorkMode
 	wm_over_ok				// _OVER_
 };
 struct State
-{
+{///*** добавить в вывод в уарт
 	float cubeTemp = 0;
+	float stableCubeTemp = 0; ///***
+	float stopGetHeadsTemp = 0;///***
 	float columnTemp = 0;
+	float stableColumnTemp = 0;///***
 	float cubeTempConfigured = 80;
 	float columnTempConfigured = 70;
 	uint8_t power;
@@ -84,4 +87,8 @@ void mainMenuExit(void);
 void setWaitMode(void);
 void setOver(void);
 void setStop(void);
+uint8_t findAlcoholPercentByTemp(float);
+float findTempByAlcohol(uint8_t);
+
+
 #endif /* INC_MAINCPP_H_ */

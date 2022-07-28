@@ -6,6 +6,7 @@
  */
 #define testing
 
+#include "TempSpirtTable.h"
 #include "stm32f1xx_hal.h"
 #include "Screen.h"
 #include "mainCpp.h"
@@ -20,7 +21,7 @@
 #include "classMenu.h"
 #include "usart_ring.h"
 #include "SenderUart.h"
-
+#include "math.h"
 
 using namespace Menuu;
 
@@ -29,6 +30,7 @@ extern TIM_HandleTypeDef htim2;
 extern RTC_HandleTypeDef hrtc;
 
 int encCounter;
+const uint8_t PERCENT_HEADS = 10; //  отбор 10 % от Абсолютного спирта
 SenderUart sender;
 Encoder encoder;
 Screen screen;
@@ -101,7 +103,7 @@ void loop()
 	tempCube.convertALL();
 	mainMenu.run();
 	HAL_RTC_GetTime(&hrtc, &status.timeCurrentMode, RTC_FORMAT_BIN);
-	while(!tempCube.isConversionComplete());
+	//while(!tempCube.isConversionComplete());
 	while(true)
 	{
 
@@ -216,6 +218,8 @@ void workTick()
 			beeper.playBlocking(m_changeMode);
 			setWaitMode();
 		}
+		ten.start(status.power);
+		return;
 	}
 
 	if ( status.mode == wm_first ) // первый перегон
@@ -225,13 +229,25 @@ void workTick()
 			beeper.playBlocking(m_changeMode);
 			setOver();
 		}
+		ten.start(status.power);
+		return;
 	}
 
 	if ( status.mode == wm_manual) //все ручное без тревог и ограничений
 	{
-
+		ten.start(status.power);
+		return;
 	}
 
+	if ( status.mode == wm_secondHeating)
+	{
+		if ( tempCube.isStable() )
+		{												//	если куб стабилизировался
+			beeper.playBlocking(m_changeMode);
+			status.mode = wm_secondGetHeads; //  перходим в режим автоматического отбора голов
+			status.stableCubeTemp = tempCube.temperature; //сохраняем стабильную температуру
+		}
+	}
 	if ( status.mode == wm_second)
 	{
 		if ( status.columnTemp < status.columnTempConfigured ) //работа
@@ -252,10 +268,28 @@ void workTick()
 			beeper.playBlocking(m_changeMode);
 			setWaitMode();
 		}
+		ten.start(status.power);
+		return;
 	}
 
-	if ( status.mode == wm_secondGetHeads) //тут все сложно)))
-	{
+	if ( status.mode == wm_secondGetHeads) // отбор ГОЛОВ тут все сложно)))
+	{		// усли только зашли в этот режим высчитываем до какой температуры отбирать
+		if (status.stopGetHeadsTemp == 0 && status.stableCubeTemp != 0 && tempCube.isStable())
+		{//Получаем что х =52*90/100=46.8%
+			int alcoNow = findAlcoholPercentByTemp(status.stableCubeTemp);
+			int alcoStop = round( (float)alcoNow * (float)(100.0- PERCENT_HEADS) / 100.0 );
+			status.stopGetHeadsTemp = findTempByAlcohol(alcoStop);
+		}
+		if (status.stopGetHeadsTemp != 0 && status.stopGetHeadsTemp < status.cubeTemp)
+		{		// 	отобрались головы
+			// както надо определиттся в какой режим уходить или сделать настройку пожже
+			status.mode = wm_wating;
+			beeper.playBlocking(m_alarm);
+		}
+
+
+		ten.start(status.power);
+		return;
 	}
 
 	if ( status.mode == wm_secondGetBody)
@@ -269,6 +303,8 @@ void workTick()
 			beeper.playBlocking(m_changeMode);
 			setWaitMode();
 		}
+		ten.start(status.power);
+		return;
 	}
 
 	if (status.mode == wm_secondsGetTail)
@@ -278,7 +314,8 @@ void workTick()
 			beeper.playBlocking(m_changeMode);
 			setOver();
 		}
-
+		ten.start(status.power);
+		return;
 	}
 
 	ten.start(status.power);
@@ -384,4 +421,17 @@ void setStop(void)
 	status.power = 0;
 }
 
+uint8_t findAlcoholPercentByTemp(float t)
+{
+	uint8_t i = 0;
+	for(   ; i < 41; i++)
+		if (SpirtBoilingDependence[i] < t)  break;
+	return i + 10; //ибо от 10 до 50% таблица
+}
 
+float findTempByAlcohol(uint8_t gradusy)
+{
+	if (gradusy < 10 || gradusy > 50)  return 0;
+	//т к массив температур от 10 % и до 50% 41 позиция в массиве
+	return SpirtBoilingDependence[gradusy-10];
+}

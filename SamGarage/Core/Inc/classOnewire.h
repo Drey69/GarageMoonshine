@@ -80,7 +80,10 @@ private:
 	uint8_t ramData[9] = {0};
 	uint8_t romData[8] = {0};
 	uint16_t pin;
-
+	bool stable;
+	float lastTemp;
+	uint32_t stableTime; //set ms
+	uint32_t lastTimeUpTemp;
 	bool resetPulse();
 	bool readBit(void);
 	bool checkLine();
@@ -107,7 +110,9 @@ public:
 	uint32_t errorNoPulseCount;
 	classOnewire();
 	classOnewire(TIM_HandleTypeDef *timer, GPIO_TypeDef * WirePort, uint16_t WirePin, uint8_t *data);
-
+	bool isStable();
+	void setStableCheckTimeSec(uint16_t sec);
+	void checkStability();
 	bool isConversionComplete();
 	bool readRom();
 	bool setResolution(uint8_t res);
