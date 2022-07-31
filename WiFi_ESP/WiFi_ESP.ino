@@ -1,47 +1,20 @@
-/*
-  WiFiTelnetToSerial - Example Transparent UART to Telnet Server for esp8266
 
-  Copyright (c) 2015 Hristo Gochkov. All rights reserved.
-  This file is part of the ESP8266WiFi library for Arduino environment.
-
-  This library is free software; you can redistribute it and/or
-  modify it under the terms of the GNU Lesser General Public
-  License as published by the Free Software Foundation; either
-  version 2.1 of the License, or (at your option) any later version.
-
-  This library is distributed in the hope that it will be useful,
-  but WITHOUT ANY WARRANTY; without even the implied warranty of
-  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-  Lesser General Public License for more details.
-
-  You should have received a copy of the GNU Lesser General Public
-  License along with this library; if not, write to the Free Software
-  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
-*/
 #include <ESP8266WiFi.h>
 
 #include <algorithm> // std::min
-
-#ifndef STASSID
-#define STASSID "your-ssid"
-#define STAPSK  "your-password"
+#include <ESP8266mDNS.h>
+#include <ArduinoOTA.h>
+#include "WiFiConnect.h" 
+#include <WiFiClient.h>  
+#ifdef ARDUINO_ARCH_ESP8266  
+#include <ESP8266HTTPClient.h>
+#else  
+#include <HTTPClient.h>
 #endif
+#include <PubSubClient.h>
+#include <LittleFS.h>
+#include <WiFiSettings.h>
 
-/*
-    SWAP_PINS:
-   0: use Serial1 for logging (legacy example)
-   1: configure Hardware Serial port on RX:GPIO13 TX:GPIO15
-      and use SoftwareSerial for logging on
-      standard Serial pins RX:GPIO3 and TX:GPIO1
-*/
-
-
-
-/*
-    SERIAL_LOOPBACK
-    0: normal serial operations
-    1: RX-TX are internally connected (loopback)
-*/
 
 #define SERIAL_LOOPBACK 0
 
@@ -57,12 +30,18 @@
 #define MAX_SRV_CLIENTS 2
 
 
-const int port = 23;
 
+const int port = 23;
+WiFiClient espClient;
 WiFiServer server(port);
 WiFiClient serverClients[MAX_SRV_CLIENTS];
 auto logger = &Serial;
 
+void setup_ota() {
+    ArduinoOTA.setHostname("TorsherHall");
+   // ArduinoOTA.setPassword(WiFiSettings.password.c_str());
+    ArduinoOTA.begin();
+}
 
 void setup() {
 
@@ -74,10 +53,12 @@ void setup() {
   //start server
   server.begin();
   server.setNoDelay(true);
-
+  setup_ota();
+  
 }
 
 void loop() {
+  ArduinoOTA.handle();
   //check if there are any new clients
   if (server.hasClient()) {
     //find free/disconnected spot

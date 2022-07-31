@@ -4,7 +4,7 @@
  *  Created on: Jun 7, 2022
  *      Author: Drey
  */
-#define testing
+//#define testing
 
 #include "TempSpirtTable.h"
 #include "stm32f1xx_hal.h"
@@ -47,8 +47,8 @@ RTC_TimeTypeDef zeroTime = {0,0,0};
 uint8_t romCube[] = {40, 193, 214, 118, 224, 1, 60, 203};
 uint8_t romColumn[] = {40, 29, 157, 118, 224, 1, 60, 235 };
 #else
- uint8_t romColumn[] = {40, 38, 147, 118, 224, 1, 60, 92 };
- uint8_t romCube[] = {40, 214, 35, 118, 224, 1, 60, 97};
+uint8_t romColumn[] = {40, 38, 147, 118, 224, 1, 60, 92 };
+uint8_t romCube[] = {40, 214, 35, 118, 224, 1, 60, 97};
 #endif
 uint8_t secondFlag;
 
@@ -103,7 +103,7 @@ void loop()
 	tempCube.convertALL();
 	mainMenu.run();
 	HAL_RTC_GetTime(&hrtc, &status.timeCurrentMode, RTC_FORMAT_BIN);
-	//while(!tempCube.isConversionComplete());
+	while(!tempCube.isConversionComplete());
 	while(true)
 	{
 
@@ -126,12 +126,13 @@ void loop()
 		{
 			lastMessegaTime = HAL_GetTick();
 			sender.sendStatus(status);
-			beeper.playBlocking(m_changeMode);
+			//beeper.playBlocking(m_changeMode);
 		}
 		if (encoder.available())
 		{
 			if (encoder.isRight() )
 			{
+				beeper.encoderTurnPlay();
 				switch (selectedItem)
 				{
 				case sel_power:
@@ -159,6 +160,7 @@ void loop()
 			}
 			if (encoder.isLeft())
 			{
+				beeper.encoderTurnPlay();
 				switch (selectedItem)
 				{
 					case sel_power:
@@ -186,6 +188,7 @@ void loop()
 		}
 		if (encoderButtonState == state_hold)
 		{
+			beeper.buttonClickPlay();
 			status.time = zeroTime;
 			mainMenu.run();
 		}
@@ -194,6 +197,7 @@ void loop()
 			++selectedItem;
 			if (selectedItem >= SelectedItemCount) selectedItem = 0;
 			screen.setSelItem(selectedItem);
+			beeper.buttonClickPlay();
 		}
 		screen.setStatus(&status);
 		screen.updateScreen();
@@ -207,7 +211,7 @@ void workTick()
 	HAL_RTC_GetTime(&hrtc, &timeStruct, RTC_FORMAT_BIN);
 	timeMinutes = timeDefTumin(&timeStruct);
 	timeMinutes = timeMinutes;
-	if ( status.mode == wm_firstHeating || status.mode == wm_secondHeating ) // если включен режим предподогрева
+	if ( status.mode == wm_firstHeating ) // если включен режим предподогрева
 	{
 		if ( status.cubeTemp < status.cubeTempConfigured)// если еще греется
 		{
@@ -239,14 +243,17 @@ void workTick()
 		return;
 	}
 
-	if ( status.mode == wm_secondHeating)
+	if ( status.mode == wm_secondHeating)//подогрев для второго перегона с переходом в отбор голов
 	{
+		if ( tempCube.temperature < 70 ) return;
 		if ( tempCube.isStable() )
 		{												//	если куб стабилизировался
 			beeper.playBlocking(m_changeMode);
 			status.mode = wm_secondGetHeads; //  перходим в режим автоматического отбора голов
 			status.stableCubeTemp = tempCube.temperature; //сохраняем стабильную температуру
 		}
+		ten.start(status.power);
+		return;
 	}
 	if ( status.mode == wm_second)
 	{

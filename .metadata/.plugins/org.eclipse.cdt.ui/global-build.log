@@ -1,7 +1,7 @@
-19:25:06 **** Incremental Build of configuration Debug for project SamGarage ****
-make -j4 all 
+09:05:42 **** Incremental Build of configuration Debug for project SamGarage ****
+make -j6 all 
 arm-none-eabi-size   SamGarage.elf 
    text	   data	    bss	    dec	    hex	filename
-  45664	    380	   4152	  50196	   c414	SamGarage.elf
+  45780	    380	   4152	  50312	   c488	SamGarage.elf
 Finished building: default.size.stdout
  

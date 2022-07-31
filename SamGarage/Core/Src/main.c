@@ -29,10 +29,7 @@
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
-uint8_t Buffer[25] = {0};
-uint8_t Space[] = " - ";
-uint8_t StartMSG[] = "Starting I2C Scanning: \r\n";
-uint8_t EndMSG[] = "Done! \r\n\r\n";
+
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
@@ -113,9 +110,6 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
-
-
-
   MX_I2C1_Init();
   MX_TIM4_Init();
   MX_USART1_UART_Init();
@@ -399,7 +393,7 @@ static void MX_TIM3_Init(void)
   htim3.Instance = TIM3;
   htim3.Init.Prescaler = 14400;
   htim3.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim3.Init.Period = 50000;
+  htim3.Init.Period = 5000;
   htim3.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
   htim3.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
   if (HAL_TIM_Base_Init(&htim3) != HAL_OK)

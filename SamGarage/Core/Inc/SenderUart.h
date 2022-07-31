@@ -21,6 +21,7 @@
 #define SENDERUART_H_
 #include "mainCpp.h"
 #include "main.h"
+#include "usart_ring.h"
 
 
 #ifdef __cplusplus
@@ -50,6 +51,7 @@ private:
 	void floatToStr(char *str, const float t);
 	void convertStatus(State & st);
 	void timeToStr(char *str, RTC_TimeTypeDef & time);
+	uint8_t checkMessage(void);
 
 };
 

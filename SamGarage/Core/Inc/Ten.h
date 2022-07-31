@@ -15,7 +15,8 @@ extern TIM_HandleTypeDef htim3;
 extern State status;
 class Ten {
 public:
-	const uint32_t timePWM = 25000; 	//5 сек для шима
+	//const uint32_t timePWM = 25000; 	//5 сек для шима
+	const uint32_t timePWM = 5000; 	//1 сек для шима
 	Ten();
 	void init();
 	//void tick();

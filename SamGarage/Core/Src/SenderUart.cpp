@@ -120,3 +120,8 @@ void SenderUart::timeToStr(char *str, RTC_TimeTypeDef & time)
 		}
 		str[8] = 0;
 }
+
+uint8_t SenderUart::checkMessage(void)
+{
+//	if ( !uart_available()) return;
+}

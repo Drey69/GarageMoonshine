@@ -49,9 +49,8 @@ void Pipka::playBlocking(Melody melody)
 				lastTime = HAL_GetTick();
 			}
 		}
-
-
 	}
+	resetPin();
 }
 //************************************************************************************************************
 void Pipka::buttonClickPlay(void) { playBlocking (m_buttonClick); }
@@ -66,7 +65,7 @@ void Pipka::setPin(void)
 {
 	if ( !pinEnabled )
 		{
-		HAL_GPIO_WritePin(gpio_port, gpio_pin, GPIO_PIN_RESET);
+		HAL_GPIO_WritePin(gpio_port, gpio_pin, GPIO_PIN_SET);
 		pinEnabled = true;
 		}
 
@@ -76,7 +75,7 @@ void Pipka::resetPin(void)
 {
 	 if ( pinEnabled )
 		 {
-		 	 HAL_GPIO_WritePin(gpio_port, gpio_pin, GPIO_PIN_SET);
+		 	 HAL_GPIO_WritePin(gpio_port, gpio_pin, GPIO_PIN_RESET);
 		 	 pinEnabled = false;
 		 }
 }
