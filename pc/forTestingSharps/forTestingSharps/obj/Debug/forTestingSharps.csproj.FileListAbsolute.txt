@@ -1,0 +1,8 @@
+C:\Users\AnderyP\YandexDisk\ArduinoProj\SamGaraje\pc\forTestingSharps\forTestingSharps\bin\Debug\forTestingSharps.exe.config
+C:\Users\AnderyP\YandexDisk\ArduinoProj\SamGaraje\pc\forTestingSharps\forTestingSharps\bin\Debug\forTestingSharps.exe
+C:\Users\AnderyP\YandexDisk\ArduinoProj\SamGaraje\pc\forTestingSharps\forTestingSharps\bin\Debug\forTestingSharps.pdb
+C:\Users\AnderyP\YandexDisk\ArduinoProj\SamGaraje\pc\forTestingSharps\forTestingSharps\obj\Debug\forTestingSharps.csproj.AssemblyReference.cache
+C:\Users\AnderyP\YandexDisk\ArduinoProj\SamGaraje\pc\forTestingSharps\forTestingSharps\obj\Debug\forTestingSharps.csproj.SuggestedBindingRedirects.cache
+C:\Users\AnderyP\YandexDisk\ArduinoProj\SamGaraje\pc\forTestingSharps\forTestingSharps\obj\Debug\forTestingSharps.csproj.CoreCompileInputs.cache
+C:\Users\AnderyP\YandexDisk\ArduinoProj\SamGaraje\pc\forTestingSharps\forTestingSharps\obj\Debug\forTestingSharps.exe
+C:\Users\AnderyP\YandexDisk\ArduinoProj\SamGaraje\pc\forTestingSharps\forTestingSharps\obj\Debug\forTestingSharps.pdb
