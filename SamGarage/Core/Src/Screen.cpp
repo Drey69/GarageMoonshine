@@ -23,7 +23,7 @@ void Screen::init()
 	modeNames[0] = (char*) "OFF";
 	modeNames[1] = (char*)"1 WORK";
 	modeNames[2] = (char*)"1 HEAT";
-	modeNames[3] = (char*)"1 WORK";
+	modeNames[3] = (char*)"2 WORK";
 	modeNames[4] = (char*)"2 HEAT";
 	modeNames[5] = (char*)"HEADS";
 	modeNames[6] = (char*)"BODY";

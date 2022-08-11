@@ -3,17 +3,15 @@
 
 #include <algorithm> // std::min
 #include <ESP8266mDNS.h>
-#include <ArduinoOTA.h>
-#include "WiFiConnect.h" 
+
+
 #include <WiFiClient.h>  
 #ifdef ARDUINO_ARCH_ESP8266  
 #include <ESP8266HTTPClient.h>
 #else  
 #include <HTTPClient.h>
 #endif
-#include <PubSubClient.h>
-#include <LittleFS.h>
-#include <WiFiSettings.h>
+
 
 
 #define SERIAL_LOOPBACK 0
@@ -37,11 +35,7 @@ WiFiServer server(port);
 WiFiClient serverClients[MAX_SRV_CLIENTS];
 auto logger = &Serial;
 
-void setup_ota() {
-    ArduinoOTA.setHostname("TorsherHall");
-   // ArduinoOTA.setPassword(WiFiSettings.password.c_str());
-    ArduinoOTA.begin();
-}
+
 
 void setup() {
 
@@ -53,12 +47,10 @@ void setup() {
   //start server
   server.begin();
   server.setNoDelay(true);
-  setup_ota();
   
 }
 
 void loop() {
-  ArduinoOTA.handle();
   //check if there are any new clients
   if (server.hasClient()) {
     //find free/disconnected spot

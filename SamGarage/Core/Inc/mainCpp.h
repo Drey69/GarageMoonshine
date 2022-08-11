@@ -33,7 +33,7 @@ enum SelectedItem : uint8_t
 };
 
 const uint8_t mainWorkModeCount = 11;
-enum mainWorkMode
+enum mainWorkMode : uint8_t
 {
 	wm_off = 0,				//__OFF__
 	wm_first,					// 1 WORK

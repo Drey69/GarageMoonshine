@@ -22,9 +22,10 @@
 #include "usart_ring.h"
 #include "SenderUart.h"
 #include "math.h"
+#include "Standart.h"
 
 using namespace Menuu;
-
+StandartConstants standart;
 extern TIM_HandleTypeDef htim4;
 extern TIM_HandleTypeDef htim2;
 extern RTC_HandleTypeDef hrtc;
@@ -84,7 +85,9 @@ void init()
 	beeper.playBlocking(m_deviceStart);
 	screen.setStatus(&status);
 	sender.sendStatus(status);
-
+	//testing sheet here
+	int test_sise = sizeof(status);
+	int trst_t = test_sise;
 }
 void delay(int ms){HAL_Delay(ms);}
 //--------------------------------------------------------
@@ -211,6 +214,7 @@ void workTick()
 	HAL_RTC_GetTime(&hrtc, &timeStruct, RTC_FORMAT_BIN);
 	timeMinutes = timeDefTumin(&timeStruct);
 	timeMinutes = timeMinutes;
+	ten.start(status.power);
 	if ( status.mode == wm_firstHeating ) // если включен режим предподогрева
 	{
 		if ( status.cubeTemp < status.cubeTempConfigured)// если еще греется
@@ -222,7 +226,6 @@ void workTick()
 			beeper.playBlocking(m_changeMode);
 			setWaitMode();
 		}
-		ten.start(status.power);
 		return;
 	}
 
@@ -233,26 +236,24 @@ void workTick()
 			beeper.playBlocking(m_changeMode);
 			setOver();
 		}
-		ten.start(status.power);
 		return;
 	}
 
 	if ( status.mode == wm_manual) //все ручное без тревог и ограничений
 	{
-		ten.start(status.power);
 		return;
 	}
 
 	if ( status.mode == wm_secondHeating)//подогрев для второго перегона с переходом в отбор голов
 	{
-		if ( tempCube.temperature < 70 ) return;
+		if ( tempCube.temperature < standart.tCubeHeatSecond ) return;
 		if ( tempCube.isStable() )
 		{												//	если куб стабилизировался
 			beeper.playBlocking(m_changeMode);
 			status.mode = wm_secondGetHeads; //  перходим в режим автоматического отбора голов
 			status.stableCubeTemp = tempCube.temperature; //сохраняем стабильную температуру
 		}
-		ten.start(status.power);
+
 		return;
 	}
 	if ( status.mode == wm_second)
@@ -275,7 +276,6 @@ void workTick()
 			beeper.playBlocking(m_changeMode);
 			setWaitMode();
 		}
-		ten.start(status.power);
 		return;
 	}
 
@@ -290,12 +290,11 @@ void workTick()
 		if (status.stopGetHeadsTemp != 0 && status.stopGetHeadsTemp < status.cubeTemp)
 		{		// 	отобрались головы
 			// както надо определиттся в какой режим уходить или сделать настройку пожже
-			status.mode = wm_wating;
+			status.mode = wm_secondGetBody;
 			beeper.playBlocking(m_alarm);
 		}
 
 
-		ten.start(status.power);
 		return;
 	}
 
@@ -310,7 +309,6 @@ void workTick()
 			beeper.playBlocking(m_changeMode);
 			setWaitMode();
 		}
-		ten.start(status.power);
 		return;
 	}
 
@@ -321,11 +319,9 @@ void workTick()
 			beeper.playBlocking(m_changeMode);
 			setOver();
 		}
-		ten.start(status.power);
 		return;
 	}
 
-	ten.start(status.power);
 }
 //------------------------------------------------------------------------
 uint32_t getEncoderMoves()
@@ -340,40 +336,40 @@ uint32_t timeDefTumin(RTC_TimeTypeDef * time) //перегон структур�
 void mainMenuheat1(void)
 {
 	status.mode =wm_firstHeating;
-	status.power = PREHEAT_POWER;
+	status.power = standart.powHeat;
 	status.time = zeroTime;
-	status.cubeTempConfigured = CUBE_PREHEAT_MODE1_STOP;
+	status.cubeTempConfigured = standart.tCubeHeatFirst;
 }
 void mainMenuheat2(void)
 {
 	status.mode =wm_secondHeating;
-	status.power = PREHEAT_POWER;
+	status.power = standart.powHeat;
 	status.time = zeroTime;
-	status.cubeTempConfigured = CUBE_PREHEAT_MODE2_STOP;
+	status.cubeTempConfigured = standart.tCubeHeatSecond;
 }
 void mainMenuMode1(void)
 {
 	status.mode =wm_first;
-	status.power = HEAT_BODY2_POWER;
+	status.power = standart.powFirstWork;
 	status.time = zeroTime;
-	status.cubeTempConfigured = CUBE_MOD1_SELECTION_MAX;
-	status.columnTempConfigured = COLUMN_MAX;
+	status.cubeTempConfigured = standart.tCubeStopFirst;
+	status.columnTempConfigured = standart.tColStopFirst;
 }
 void mainMenuMode2(void)
 {
 	status.mode =wm_second;
-	status.power = HEAT_BODY2_POWER;
+	status.power = standart.powSecondWork;
 	status.time = zeroTime;
-	status.cubeTempConfigured = CUBE_BODY_SELECTION_MAX;
-	status.columnTempConfigured = COLUMN_MAX;
+	status.cubeTempConfigured = standart.tCubeStopSecondBody;
+	status.columnTempConfigured = standart.tColStopSecond;
 }
 void mainMenuManual(void)
 {
 	status.mode =wm_manual;
 	status.power = 0;
 	status.time = zeroTime;
-	status.cubeTempConfigured = CUBE_PREHEAT_MODE2_STOP;
-	status.columnTempConfigured = COLUMN_MAX;
+	status.cubeTempConfigured = standart.tCubeStopSecondBody;
+	status.columnTempConfigured = standart.tColStopSecond;
 }
 void mainMenuExit(void)
 {
@@ -386,32 +382,32 @@ void mainMenuExit(void)
 void mainMenuGetHead(void)
 {
 	status.mode = wm_secondGetHeads;
-	status.power = HEAT_HEADS_POWER;
-	status.cubeTempConfigured = CUBE_BODY_SELECTION_MAX;
-	status.columnTempConfigured = COLUMN_MAX;
+	status.power = standart.powGetHeads;
+	status.cubeTempConfigured = standart.tCubeStopSecondBody;
+	status.columnTempConfigured = standart.tColMax;
 	status.time = zeroTime;
 }
 void mainMenuGetBody(void)
 {
 	status.mode = wm_secondGetBody;
-	status.power = HEAT_BODY2_POWER;
-	status.cubeTempConfigured = CUBE_BODY_SELECTION_MAX;
-	status.columnTempConfigured = COLUMN_MAX;
+	status.power = standart.powSecondWork;
+	status.cubeTempConfigured = standart.tCubeStopSecondBody;
+	status.columnTempConfigured = standart.tColMax;
 	status.time = zeroTime;
 }
 void mainMenuGetTail(void)
 {
 	status.mode = wm_secondsGetTail;
-	status.power = HEAT_BODY1_POWER;
-	status.cubeTempConfigured = CUBE_TAIL_SELECTION_MAX;
-	status.columnTempConfigured = COLUMN_MAX;
+	status.power = standart.powSecondWork;
+	status.cubeTempConfigured = standart.tCubeStopSecondTail;
+	status.columnTempConfigured = standart.tColMax;
 	status.time = zeroTime;
 }
 
 void setWaitMode(void)
 {
 	status.mode =wm_wating;
-	status.power = HEAT_WAITING_POWER;
+	status.power = standart.powWait;
 	status.time = zeroTime;
 	status.cubeTempConfigured = CUBE_MOD1_SELECTION_MAX;
 	status.columnTempConfigured = COLUMN_MIN;

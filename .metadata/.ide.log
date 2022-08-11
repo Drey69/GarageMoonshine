@@ -14392,3 +14392,17 @@
 2022-07-30 14:11:33,997 [WARN] IP:2111 - Analog_Filter not found: check if there is a RefParameter without a condition.
 2022-07-30 14:11:33,997 [WARN] IP:2111 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
 2022-07-30 14:11:33,997 [WARN] IP:2111 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2022-07-31 13:41:45,573 [INFO] Activator:177 - 
+
+
+2022-07-31 13:41:45,574 [INFO] Activator:178 - !SESSION log4j initialized
+2022-07-31 13:42:16,008 [ERROR] LogOutputStream:74 - [STDERR_REDIRECT] SLF4J: Failed to load class "org.slf4j.impl.StaticLoggerBinder".
+2022-07-31 13:42:16,010 [ERROR] LogOutputStream:74 - [STDERR_REDIRECT] SLF4J: Defaulting to no-operation (NOP) logger implementation
+2022-07-31 13:42:16,012 [ERROR] LogOutputStream:74 - [STDERR_REDIRECT] SLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further details.
+2022-08-11 21:04:46,023 [INFO] Activator:177 - 
+
+
+2022-08-11 21:04:46,038 [INFO] Activator:178 - !SESSION log4j initialized
+2022-08-11 21:05:15,523 [ERROR] LogOutputStream:74 - [STDERR_REDIRECT] SLF4J: Failed to load class "org.slf4j.impl.StaticLoggerBinder".
+2022-08-11 21:05:15,524 [ERROR] LogOutputStream:74 - [STDERR_REDIRECT] SLF4J: Defaulting to no-operation (NOP) logger implementation
+2022-08-11 21:05:15,526 [ERROR] LogOutputStream:74 - [STDERR_REDIRECT] SLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further details.
